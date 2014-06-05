@@ -3,6 +3,9 @@
  * 
  * Designed to generate CSS on the fly that sets up a responsive grid system of any size
  * for use with Twitter Bootstrap 3.
+ * Original Post is created by the smart "Tom Maiaroto" in http://www.shift8creative.com/posts/view/flexible-twitter-bootstrap-grid
+ * Repository is forked from https://github.com/tmaiaroto/gridline
+ * I just added the col-xy-offset-n facility and make the loop of the created-on-the-fly styles starts from zero not from one
 */
 
 // Make a style sheet element and append it after other style sheets in the `<head>` section.
@@ -71,13 +74,20 @@ gAddStyleToSheet(null, ".flush-row [class*='col-']:last-of-type", "padding-right
         if(columnSets['cols-' + cols] === undefined) {
             columnSets.push('cols-' + cols);
             
-            for(var c=1; c <= cols; c++) {
+            for(var c=0; c <= cols; c++) {
                 var widthP = (c / cols) * 100;
-                gAddStyleToSheet(lgSheet, ".cols-" + cols + " .col-lg-" + c, "width: " + widthP + "%; float:left;");
-                gAddStyleToSheet(mdSheet, ".cols-" + cols + " .col-md-" + c, "width: " + widthP + "%; float:left;");
-                gAddStyleToSheet(smSheet, ".cols-" + cols + " .col-sm-" + c, "width: " + widthP + "%; float:left;");
-                gAddStyleToSheet(xsSheet, ".cols-" + cols + " .col-xs-" + c, "width: " + widthP + "%; float:left;");
-                
+                gAddStyleToSheet(lgSheet, ".cols-" + cols + " .col-lg-offset-" + c, "margin-left: " + widthP + "%;");
+                gAddStyleToSheet(mdSheet, ".cols-" + cols + " .col-md-offset-" + c, "margin-left: " + widthP + "%;");
+                gAddStyleToSheet(smSheet, ".cols-" + cols + " .col-sm-offset-" + c, "margin-left: " + widthP + "%;");
+                gAddStyleToSheet(xsSheet, ".cols-" + cols + " .col-xs-offset-" + c, "margin-left: " + widthP + "%;");
+
+                if (c > 0) {
+	                gAddStyleToSheet(lgSheet, ".cols-" + cols + " .col-lg-" + c, "width: " + widthP + "%; float:left;");
+	                gAddStyleToSheet(mdSheet, ".cols-" + cols + " .col-md-" + c, "width: " + widthP + "%; float:left;");
+	                gAddStyleToSheet(smSheet, ".cols-" + cols + " .col-sm-" + c, "width: " + widthP + "%; float:left;");
+	                gAddStyleToSheet(xsSheet, ".cols-" + cols + " .col-xs-" + c, "width: " + widthP + "%; float:left;");
+                }
+
                 gAddStyleToSheet(lgSheet, ".cols-" + cols + " .col-lg-push-" + c, "left: " + widthP + "%;");
                 gAddStyleToSheet(mdSheet, ".cols-" + cols + " .col-md-push-" + c, "left: " + widthP + "%;");
                 gAddStyleToSheet(smSheet, ".cols-" + cols + " .col-sm-push-" + c, "left: " + widthP + "%;");
